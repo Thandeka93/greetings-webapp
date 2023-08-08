@@ -1,0 +1,16 @@
+<div class="row">
+  <h1>users</h1>
+  <table>
+    <tr>
+      <th>user</th>
+    </tr>
+    {{#each users}}
+      <tr>
+        <td><a href="/counter/{{this}}">{{this}}</a></td>
+      </tr>
+    {{/each}}
+    <tr>
+      <td>{{greetedTimesMsg}}</td>
+    </tr>
+  </table>
+</div>
