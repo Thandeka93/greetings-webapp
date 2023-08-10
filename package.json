@@ -35,6 +35,7 @@
     "express": "^4.18.2",
     "express-flash": "^0.0.2",
     "express-handlebars": "^7.1.1",
-    "express-session": "^1.17.3"
+    "express-session": "^1.17.3",
+    "pg-promise": "^11.5.3"
   }
 }

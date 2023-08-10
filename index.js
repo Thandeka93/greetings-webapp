@@ -56,7 +56,7 @@ app.get("/counter/:currentUsername", (req, res) => {
 
     let user = req.params.currentUsername;
     let howManyTimesGreeted = Greet.getNamesCountMap()[user];
-    let userMsg = `Hello, ${user} has been greeted ${howManyTimesGreeted} time/s`;
+    let userMsg = `Hello, ${user} has been greeted ${howManyTimesGreeted} times`;
     res.render("greeted", { greetedTimesMsg: userMsg });
 });
 
