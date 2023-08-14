@@ -1,14 +1,14 @@
 import assert from "assert";
-import Greet from '../greet.js';
+import Greeting from '../greet.js';
 
 
 // Test suite for the Greet factory function
-describe('Greet', () => {
+describe('Greeting', () => {
   let greetInstance;
 
   // Set up a new instance of Greet before each test
   beforeEach(() => {
-    greetInstance = Greet();
+    greetInstance = Greeting();
   });
 
   // Test the peopleCount function

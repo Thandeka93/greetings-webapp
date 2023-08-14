@@ -3,10 +3,10 @@ import { engine } from "express-handlebars";
 import bodyParser from "body-parser";
 import flash from "express-flash";
 import session from "express-session";
-import greet from "./greet.js";
+import greeting from "./greet.js";
 
 const app = express();
-const Greet = greet();
+const Greeting = greeting();
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -30,19 +30,18 @@ app.use(
 app.use(flash());
 
 app.get("/", function (req, res) {
-    req.flash("errorText", Greet.currentErrorMsg());
+    req.flash("errorText", Greeting.currentErrorMsg());
     const errorText = req.flash("errorText")[0]; // Retrieve the flash message
     res.render("index", {
-        greetMsg: Greet.greetRecord(),
-        counter: Greet.peopleGreeted(),
+        greetMsg: Greeting.greetRecord(),
+        counter: Greeting.peopleGreeted(),
         errorText: errorText, // Pass the error message to the template
     });
 });
 
 app.get("/greeted", (req, res) => {
-
-    let usersArr = Greet.getGreetedUsers();
-    res.render("greeted", { users: usersArr });
+    let userList = Greeting.getGreetedUsers();
+    res.render("greeted", { users: userList });
 });
 
 app.post("/greetings", function (req, res) {
@@ -50,11 +49,11 @@ app.post("/greetings", function (req, res) {
     const language = req.body.language;
 
     if (username && language) {
-        Greet.userGreetLang(language, username);
-        Greet.peopleCount(username);
-        Greet.displayErrorMsg(username, language);
+        Greeting.userGreetLang(language, username);
+        Greeting.peopleCount(username);
+        Greeting.displayErrorMsg(username, language);
     } else {
-        Greet.displayErrorMsg(username, language); // Display appropriate error message
+        Greeting.displayErrorMsg(username, language); // Display appropriate error message
     }
 
     res.redirect("/");
@@ -62,7 +61,7 @@ app.post("/greetings", function (req, res) {
 
 app.get("/counter/:currentUsername", (req, res) => {
     let user = req.params.currentUsername.toLowerCase();
-    let howManyTimesGreeted = Greet.getUsageCount()[user];
+    let howManyTimesGreeted = Greeting.getUsageCount()[user];
     
     if (howManyTimesGreeted !== undefined) {
         const capitalizedUsername = user.charAt(0).toUpperCase() + user.slice(1);
@@ -75,7 +74,7 @@ app.get("/counter/:currentUsername", (req, res) => {
 });
 
 app.post("/reset", (req, res) => {
-    Greet.resetCounter();
+    Greeting.resetCounter();
     res.redirect("/");
 });
 

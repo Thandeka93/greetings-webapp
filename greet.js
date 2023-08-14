@@ -1,4 +1,4 @@
-export default function Greet() {
+export default function Greeting() {
   let greetCounter = 0;
   let users = [];
   let greetMsg = "";
