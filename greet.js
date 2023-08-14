@@ -3,37 +3,42 @@ export default function Greet() {
   let users = [];
   let greetMsg = "";
   let errorMsg = "";
-  const lettersOnlyRegex = /^[a-zA-Z]+$/;
+  const alphabeticalRegex = /^[a-zA-Z]+$/;
   const namesCountMap = {};
 
-  function peopleCounter(username) {
+  function peopleCount(username) {
     const usernameTrimmed = username.trim();
-    if (lettersOnlyRegex.test(usernameTrimmed) && !users.includes(usernameTrimmed.toLowerCase())) {
+    if (alphabeticalRegex.test(usernameTrimmed) && !users.includes(usernameTrimmed.toLowerCase())) {
       greetCounter++;
       users.push(usernameTrimmed.toLowerCase());
     }
   }
 
-  function greetUserWithLanguage(language, username) {
-    if (username !== undefined) {
+  function userGreetLang(language, username) {
+    if (username !== undefined && language !== undefined) {
       const usernameTrimmed = username.trim();
-      if (lettersOnlyRegex.test(usernameTrimmed)) {
-        const arrName = usernameTrimmed.toLowerCase().split("");
+      if (alphabeticalRegex.test(usernameTrimmed)) {
+        const lowercaseUsername = usernameTrimmed.toLowerCase();
+        const capitalizedUsername = lowercaseUsername.charAt(0).toUpperCase() + lowercaseUsername.slice(1);
+        if (namesCountMap[lowercaseUsername] === undefined) {
+            namesCountMap[lowercaseUsername] = 1;
+        } else {
+            namesCountMap[lowercaseUsername]++;
+        }
+    
+        const arrName = lowercaseUsername.split(""); // Use lowercase version for name manipulation
         const [firstLetter, ...restOfLetters] = arrName;
         const capitalizeName = firstLetter.toUpperCase() + restOfLetters.join("");
-        if (namesCountMap[username] === undefined) {
-          namesCountMap[username] = 1;
-        } else {
-          namesCountMap[username]++;
-        }
+    
         if (language === "isiZulu") {
-          greetMsg = `Sawubona ${capitalizeName}`;
+            greetMsg = `Sawubona ${capitalizedUsername}`;
         } else if (language === "English") {
-          greetMsg = `Hello ${capitalizeName}`;
+            greetMsg = `Hello ${capitalizedUsername}`;
         } else if (language === "Spanish") {
-          greetMsg = `Hola ${capitalizeName}`;
+            greetMsg = `Hola ${capitalizedUsername}`;
         }
-      }
+    }
+    
     }
   }
 
@@ -59,14 +64,14 @@ export default function Greet() {
   }
 
   return {
-    peopleCounter,
-    greetUserWithLanguage,
+    peopleCount,
+    userGreetLang,
     displayErrorMsg,
     resetCounter,
-    userGreetedIn: () => greetMsg,
+    greetRecord: () => greetMsg,
     currentErrorMsg: () => errorMsg,
     peopleGreeted: () => greetCounter,
     getGreetedUsers: () => users,
-    getNamesCountMap: () => namesCountMap,
+    getUsageCount: () => namesCountMap,
   };
 }

@@ -2,15 +2,22 @@
 * {
   padding: 0;
   margin: 0;
-  /* box-sizing: border-box; */
+}
+.container {
+  background: #CD5C5C;
+  color: #dad7cd;
+  max-width: 500px;
+  margin: 0 auto; 
+  padding: 20px;
+  margin-top: 50px;
+
 }
 body {
-  background-color: #BF4F51;
+  background-color: #FDBCB4;
   font-family: "Roboto", sans-serif;
 }
-article {
+.greeting-widget-box {
   text-align: center;
-  padding: 10px;
 }
 .flex {
   display: flex;
@@ -23,38 +30,17 @@ div.flex {
 .hidden {
   display: none;
 }
-.counter-text,
-.output-str,
-.greeting,
+.error-message {
+  color: rgb(211, 6, 6);
+  margin-top: 10px;
+  display: none; 
+  font-size: large;
+}
+
+
 button,
-label {
-  color: #CD5C5C;
-}
-.error-text {
-  color: rgb(205, 9, 9);
-  font-size: 16px;
-}
-.greet-me-btn,
 .radio-btn {
   cursor: pointer;
-}
-/* .greeting { */
-  /* border: 1px solid #CD5C5C; */
-  /* padding-block: 15px; */
-  /* margin-bottom: 20px; */
-  /* font-size: 30px; */
-  /* letter-spacing: 0.9px; */
-/* } */
-
-.greeting-widget-box {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #FDBCB4;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 5em;
-    
 }
 
 .text-input {
@@ -69,34 +55,66 @@ button {
 .greet-me-btn,
 .get-users-btn {
   border: none;
-  background-color: #CD5C5C;
-  color: #dad7cd;
+  background-color: #FDBCB4;
+  color: #fff;
 }
+
+.greet-me-btn{
+  border: none;
+  background-color: #FDBCB4;
+  color: #fff;
+  margin-top: 5px;
+}
+
 .get-users-btn {
-  /* border: none;
-  background-color: #588157; */
   margin-left: 20px;
 }
+.back-btn{
+  border: none;
+  background-color: #FDBCB4;
+  color: #fff;
+  margin-top: 14px;
+
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
 .counter-text {
   font-size: 40px;
   margin-block: 10px;
   margin-left: 10px;
 }
 .radio-btns {
-  margin-bottom: 14px;
+  margin-top: 14px;
 }
 .radio-btn {
   margin-left: 14px;
 }
 .reset-btn {
   border: 1px solid #dad7cd;
-  background-color: #CD5C5C;
-  color: #dad7cd;
+  background-color: #FDBCB4;
+  color: #fff;
 }
 .output-str {
   font-size: 20px;
   margin-bottom: 45px;
   font-weight: 500;
+}
+.column-heading {
+  text-align: left;
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  padding-block-start: 20px;
+}
+.user-msg {
+  color: #dad7cd;
+  font-size: 18px;
+}
+.column-heading td a {
+  font-size: 200px;
 }
 @media (min-width: 788px) {
   .greeting {

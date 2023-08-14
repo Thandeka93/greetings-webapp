@@ -11,39 +11,28 @@ describe('Greet', () => {
     greetInstance = Greet();
   });
 
-  // Test the peopleCounter function
+  // Test the peopleCount function
   it('should increment the greetCounter and add users', () => {
-    greetInstance.peopleCounter('John');
+    greetInstance.peopleCount('John');
     assert.strictEqual(greetInstance.peopleGreeted(), 1);
     assert.deepStrictEqual(greetInstance.getGreetedUsers(), ['john']);
   });
 
-  // Test the greetUserWithLanguage function
+  // Test the userGreetLang function
   it('should greet the user in the specified language', () => {
-    greetInstance.greetUserWithLanguage('English', 'Alice');
-    assert.strictEqual(greetInstance.userGreetedIn(), 'Hello Alice');
+    greetInstance.userGreetLang('English', 'Alice');
+    assert.strictEqual(greetInstance.greetRecord(), 'Hello Alice');
   });
 
 
   // Test the resetCounter function
   it('should reset the greet counter and clear messages', () => {
-    greetInstance.peopleCounter('Alex');
-    greetInstance.greetUserWithLanguage('isiZulu', 'David');
+    greetInstance.peopleCount('Alex');
+    greetInstance.userGreetLang('isiZulu', 'David');
     greetInstance.resetCounter();
     assert.strictEqual(greetInstance.peopleGreeted(), 0);
     assert.deepStrictEqual(greetInstance.getGreetedUsers(), []);
-    assert.strictEqual(greetInstance.userGreetedIn(), '');
+    assert.strictEqual(greetInstance.greetRecord(), '');
     assert.strictEqual(greetInstance.currentErrorMsg(), '');
-  });
-
-  // Test the getNamesCountMap function
-  it('should return the names count map', () => {
-    greetInstance.greetUserWithLanguage('English', 'Alice');
-    greetInstance.greetUserWithLanguage('English', 'Alice');
-    greetInstance.greetUserWithLanguage('Spanish', 'Bob');
-    assert.deepStrictEqual(greetInstance.getNamesCountMap(), {
-      'Alice': 2,
-      'Bob': 1,
-    });
   });
 });

@@ -1,57 +1,57 @@
-{{!-- <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css" />
-    <title>Greetings Widget</title>
-  </head>
-  <body> --}}
-    <article>
-      <div class="greeting-widget-box">
-      <div class="container">
-        <h1 class="greeting">Greeting</h1>
+<div class="greeting-widget-box">
+  <div class="container">
+    <h1 class="greeting">Greeting</h1>
 
-        <form action="/greetings" method="POST">
-
-          {{!-- <label class="inputName" for="name">Please Enter Your Name:</label> --}}
-          <p class="error-text">{{messages.errorText}}</p>
-
-          <div class="flex">
-            <input type="text" placeholder="Please enter your name" class="text-input" name="userInput"/>
-          </div>
-
-          <div class="flex">
-            <button class="btn greet-me-btn" type="submit">Greet Me</button>
-            <h2 class="counter-text">{{counter}}</h2>
-          </div>
-
-          <div class="radio-btns">
-            <input type="radio" name="language" value="isiZulu" class="radio-btn"/>
-            <label for="radio">isiZulu</label>
-
-            <input type="radio" name="language" value="English" class="radio-btn"/>
-            <label for="radio">English</label>
-
-            <input type="radio" name="language" value="Spanish" class="radio-btn"/>
-            <label for="radio">Spanish</label>
-
-          </div>
-
-          <p class="output-str">{{greetMsg}}</p>
-
-        </form>
-
-        <div class="flex">
-          <form action="/reset" method="POST">
-            <button class="btn reset-btn" type="submit">Reset</button>
-          </form>
-
-          <button class="btn get-users-btn"><a href="/greeted">Get Users</a></button>
-
-        </div>
+    <form action="/greetings" method="POST">
+      <div class="error-message">
+        {{errorText}}
       </div>
+
+
+      <div class="flex">
+        <input type="text" placeholder="Please enter your name" class="text-input" name="userInput" />
       </div>
-    </article>
-  {{!-- </body>
-</html> --}}
+
+      <div class="radio-btns">
+        <input type="radio" name="language" value="isiZulu" class="radio-btn" />
+        <label for="radio">isiZulu</label>
+
+        <input type="radio" name="language" value="English" class="radio-btn" />
+        <label for="radio">English</label>
+
+        <input type="radio" name="language" value="Spanish" class="radio-btn" />
+        <label for="radio">Spanish</label>
+
+      </div>
+
+      <div class="flex">
+        <button class="btn greet-me-btn" type="submit">Greet Me</button>
+        <h2 class="counter-text">{{counter}}</h2>
+      </div>
+
+      <p class="output-str">{{greetMsg}}</p>
+
+    </form>
+
+    <div class="flex">
+      <form action="/reset" method="POST">
+        <button class="btn reset-btn" type="submit">Reset</button>
+      </form>
+
+      <button class="btn get-users-btn"><a href="/greeted">Get Users</a></button>
+
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Display the error message for 3 seconds and then hide it
+  const errorMessage = document.querySelector('.error-message');
+  if (errorMessage) {
+    errorMessage.style.display = 'block'; // Show the error message
+    setTimeout(() => {
+      errorMessage.style.display = 'none'; // Hide the error message after 4 seconds
+    }, 3000);
+  }
+</script>

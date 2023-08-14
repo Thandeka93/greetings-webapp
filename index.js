@@ -31,19 +31,12 @@ app.use(flash());
 
 app.get("/", function (req, res) {
     req.flash("errorText", Greet.currentErrorMsg());
+    const errorText = req.flash("errorText")[0]; // Retrieve the flash message
     res.render("index", {
-        greetMsg: Greet.userGreetedIn(),
+        greetMsg: Greet.greetRecord(),
         counter: Greet.peopleGreeted(),
+        errorText: errorText, // Pass the error message to the template
     });
-});
-
-app.post("/greetings", function (req, res) {
-
-    Greet.greetUserWithLanguage(req.body.language, req.body.userInput);
-    Greet.peopleCounter(req.body.userInput);
-    Greet.displayErrorMsg(req.body.userInput, req.body.language);
-
-    res.redirect("/");
 });
 
 app.get("/greeted", (req, res) => {
@@ -52,19 +45,39 @@ app.get("/greeted", (req, res) => {
     res.render("greeted", { users: usersArr });
 });
 
-app.get("/counter/:currentUsername", (req, res) => {
+app.post("/greetings", function (req, res) {
+    const username = req.body.userInput;
+    const language = req.body.language;
 
-    let user = req.params.currentUsername;
-    let howManyTimesGreeted = Greet.getNamesCountMap()[user];
-    let userMsg = `Hello, ${user} has been greeted ${howManyTimesGreeted} time/s`;
-    res.render("greeted", { greetedTimesMsg: userMsg });
+    if (username && language) {
+        Greet.userGreetLang(language, username);
+        Greet.peopleCount(username);
+        Greet.displayErrorMsg(username, language);
+    } else {
+        Greet.displayErrorMsg(username, language); // Display appropriate error message
+    }
+
+    res.redirect("/");
+});
+
+app.get("/counter/:currentUsername", (req, res) => {
+    let user = req.params.currentUsername.toLowerCase();
+    let howManyTimesGreeted = Greet.getUsageCount()[user];
+    
+    if (howManyTimesGreeted !== undefined) {
+        const capitalizedUsername = user.charAt(0).toUpperCase() + user.slice(1);
+        let userMsg = `Hello, ${capitalizedUsername} has been greeted ${howManyTimesGreeted} time${howManyTimesGreeted > 1 ? 's' : ''}`;
+        res.render("greeted", { greetedTimesMsg: userMsg });
+    } else {
+        let userMsg = `Hello, ${user} has not been greeted yet`;
+        res.render("greeted", { greetedTimesMsg: userMsg });
+    }
 });
 
 app.post("/reset", (req, res) => {
     Greet.resetCounter();
     res.redirect("/");
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
