@@ -3,10 +3,12 @@ import { engine } from "express-handlebars";
 import bodyParser from "body-parser";
 import flash from "express-flash";
 import session from "express-session";
+import pgPromise from "pg-promise";
 import greeting from "./greet.js";
 
 const app = express();
 const Greeting = greeting();
+const pgp= pgPromise();
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");

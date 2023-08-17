@@ -5,6 +5,7 @@ export default function Greeting() {
   let errorMsg = "";
   const alphabeticalRegex = /^[a-zA-Z]+$/;
   const namesCountMap = {};
+  
 
   function peopleCount(username) {
     const usernameTrimmed = username.trim();
@@ -45,9 +46,9 @@ export default function Greeting() {
   function displayErrorMsg(username, language) {
     if (username !== undefined) {
       if (username === "") {
-        errorMsg = "Please enter your name";
+        errorMsg = "Please enter your name and select a language";
       } else if (language === undefined) {
-        errorMsg = "Please select a language";
+        errorMsg = "Please select a language and enter your name";
       } else if (username === "" && language === undefined) {
         errorMsg = "Please select a language and enter your name";
       } else if (username !== "" && language !== undefined) {
