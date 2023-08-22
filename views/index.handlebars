@@ -34,7 +34,7 @@
     </form>
 
     <div class="flex">
-      <form action="/reset" method="POST">
+      <form action="/reset" method="POST" onsubmit="return confirmReset();">
         <button class="btn reset-btn" type="submit">Reset</button>
       </form>
 
@@ -46,6 +46,11 @@
 </div>
 
 <script>
+
+ function confirmReset() {
+    return confirm("Are you sure you want to reset the application?\nThis will reset the greet count and people greeted.");
+  }
+
   // Display the error message for 3 seconds and then hide it
   const errorMessage = document.querySelector('.error-message');
   if (errorMessage) {
