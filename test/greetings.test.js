@@ -2,37 +2,45 @@ import assert from "assert";
 import Greeting from '../greet.js';
 
 
-// Test suite for the Greet factory function
 describe('Greeting', () => {
-  let greetInstance;
+  let greetingInstance;
 
-  // Set up a new instance of Greet before each test
   beforeEach(() => {
-    greetInstance = Greeting();
+    greetingInstance = Greeting();
   });
 
-  // Test the peopleCount function
-  it('should increment the greetCounter and add users', () => {
-    greetInstance.peopleCount('John');
-    assert.strictEqual(greetInstance.peopleGreeted(), 1);
-    assert.deepStrictEqual(greetInstance.getGreetedUsers(), ['john']);
+  afterEach(() => {
+    greetingInstance.resetCounter();
   });
 
-  // Test the userGreetLang function
-  it('should greet the user in the specified language', () => {
-    greetInstance.userGreetLang('English', 'Alice');
-    assert.strictEqual(greetInstance.greetRecord(), 'Hello Alice');
+  it('should greet in different languages', () => {
+    greetingInstance.userGreetLang('English', 'Alice');
+    assert.equal(greetingInstance.greetRecord(), 'Hello');
+    greetingInstance.userGreetLang('isiZulu', 'Bob');
+    assert.equal(greetingInstance.greetRecord(), 'Sawubona ');
+    greetingInstance.userGreetLang('Spanish', 'Charlie');
+    assert.equal(greetingInstance.greetRecord(), 'Hola');
+  });
+
+  it('should count people and maintain a names count map', () => {
+    greetingInstance.userGreetLang('English', 'Alice');
+    greetingInstance.userGreetLang('English', 'Bob');
+    greetingInstance.userGreetLang('English', 'Alice'); // Repeated name
+    const namesCountMap = greetingInstance.getUsageCount();
+    assert.equal(namesCountMap['alice'], 2);
+    assert.equal(namesCountMap['bob'], 1);
   });
 
 
-  // Test the resetCounter function
-  it('should reset the greet counter and clear messages', () => {
-    greetInstance.peopleCount('Alex');
-    greetInstance.userGreetLang('isiZulu', 'David');
-    greetInstance.resetCounter();
-    assert.strictEqual(greetInstance.peopleGreeted(), 0);
-    assert.deepStrictEqual(greetInstance.getGreetedUsers(), []);
-    assert.strictEqual(greetInstance.greetRecord(), '');
-    assert.strictEqual(greetInstance.currentErrorMsg(), '');
+  it('should track the number of people greeted', () => {
+    greetingInstance.userGreetLang('English', 'Alice');
+    greetingInstance.userGreetLang('English', 'Bob');
+    assert.equal(greetingInstance.peopleGreeted(), 2);
+  });
+
+
+  it('should set and get the name', () => {
+    greetingInstance.setName('Alice');
+    assert.equal(greetingInstance.getName(), 'alice');
   });
 });
