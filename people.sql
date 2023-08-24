@@ -1,6 +1,7 @@
-create table users(
-  id serial not null primary key, 
-  user_name text not null,
-  user_counter integer DEFAULT 0
+CREATE TABLE users(
+  id SERIAL NOT NULL PRIMARY KEY, 
+  user_name TEXT NOT NULL,
+  user_counter INTEGER DEFAULT 0
   );
+
 

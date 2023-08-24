@@ -2,16 +2,13 @@
   <h1>Greeted people</h1>
   <table>
     <tr>
-      <th>User</th>
+      <th>User List</th>
     </tr>
-    {{#each users}}
+    {{#each userList}}
       <tr>
-        <td><a href="/counter/{{this}}">{{this}}</a></td>
+        <td><a href="/counter/{{this.user_name}}">{{this.user_name}}</a></td>
       </tr>
     {{/each}}
-    <tr>
-      <td>{{greetedTimesMsg}}</td>
-    </tr>
   </table>
   
   <button class="btn back-btn"><a href="/">Back</a></button>

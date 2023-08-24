@@ -5,21 +5,19 @@ import flash from "express-flash";
 import session from "express-session";
 import pgPromise from "pg-promise";
 import greeting from "./greet.js";
+import makeQuery from "./service/query.js";
 
 const app = express();
 
-const connectionString = process.env.DATABASE_URL || 'postgres://greetings_webapp_pt29_user:fqH76pMt6QNdvzLyqc6eolSx9QTzv4tf@dpg-cjias4njbvhs73bpd4g0-a/greetings_webapp_pt29';
-const pgp = pgPromise();
-// const db = pgp({
-//     host: "dpg-cjhn0u337aks738ri8bg-a",
-//     port: "5432",
-//     database: "greetings-webapp",
-//     user: "greetings_webapp_user",
-//     password: "yUhH6NHMRyi6ojr4JdURbfmjILoihuTK"
-// });  
+const connectionString = process.env.DATABASE_URL || 'postgres://greetings_webapp_pt29_user:fqH76pMt6QNdvzLyqc6eolSx9QTzv4tf@dpg-cjias4njbvhs73bpd4g0-a.oregon-postgres.render.com/greetings_webapp_pt29?ssl=true';  
+// 'postgres://postgres:Thandeka@localhost:5432/greetings'
+
+const pgp = pgPromise();  
 const db = pgp(connectionString);
 
-const Greeting = greeting(db);
+const Greeting = greeting();
+
+let datab = makeQuery(db);
 
 
 app.engine("handlebars", engine());
@@ -43,52 +41,52 @@ app.use(
 
 app.use(flash());
 
-app.get("/", function (req, res) {
+app.get("/", async function (req, res) {
     req.flash("errorText", Greeting.currentErrorMsg());
     const errorText = req.flash("errorText")[0]; // Retrieve the flash message
+    const name = Greeting.getName()
+    const counts = await (await datab).peopleCount();
+    const counter = Object.values(counts)
+
     res.render("index", {
         greetMsg: Greeting.greetRecord(),
-        counter: Greeting.peopleGreeted(),
+        name,
+        counter,
         errorText: errorText, // Pass the error message to the template
     });
 });
 
-app.get("/greeted", (req, res) => {
-    let userList = Greeting.getGreetedUsers();
-    res.render("greeted", { users: userList });
+app.get("/greeted", async (req, res) => {
+    const userList = await (await datab).bring()
+
+    res.render("greeted", { userList });
 });
 
-app.post("/greetings", function (req, res) {
+app.post("/greetings", async function (req, res) {
     const username = req.body.userInput;
     const language = req.body.language;
-
-    if (username && language) {
-        Greeting.userGreetLang(language, username);
-        Greeting.peopleCount(username);
-        Greeting.displayErrorMsg(username, language);
-    } else {
-        Greeting.displayErrorMsg(username, language); // Display appropriate error message
+    Greeting.setName(username);
+    
+    if (username && language && username !== null) {
+        Greeting.userGreetLang(language,username);
+       (await datab).insert(Greeting.getName())
     }
 
     res.redirect("/");
 });
 
-app.get("/counter/:currentUsername", (req, res) => {
-    let user = req.params.currentUsername.toLowerCase();
-    let howManyTimesGreeted = Greeting.getUsageCount()[user];
+app.get("/counter/:user", async (req, res) => {
+    let username = req.params.user;
+    let nameCount = await (await datab).countGreetedUsers(username);
+    
+        res.render("counter", { nameCount, username });
 
-    if (howManyTimesGreeted !== undefined) {
-        const capitalizedUsername = user.charAt(0).toUpperCase() + user.slice(1);
-        let userMsg = `Hello, ${capitalizedUsername} has been greeted ${howManyTimesGreeted} time${howManyTimesGreeted > 1 ? 's' : ''}`;
-        res.render("greeted", { greetedTimesMsg: userMsg });
-    } else {
-        let userMsg = `Hello, ${user} has not been greeted yet`;
-        res.render("greeted", { greetedTimesMsg: userMsg });
-    }
 });
 
-app.post("/reset", (req, res) => {
+app.post("/reset",async (req, res) => {
     Greeting.resetCounter();
+     await (await datab).reset();
+    
     res.redirect("/");
 });
 
