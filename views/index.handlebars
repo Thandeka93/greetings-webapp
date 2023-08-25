@@ -3,9 +3,12 @@
     <h1 class="greeting">Greeting</h1>
 
     <form action="/greetings" method="POST">
-      <div class="error-message">
+      {{#if shouldDisplayError}}
+      <div class="error-message" id="error-message">
         {{errorText}}
       </div>
+      {{/if}}
+      
 
 
       <div class="flex">
@@ -28,8 +31,15 @@
         <button class="btn greet-me-btn" type="submit">Greet Me</button>
         <h2 class="counter-text">{{counter}}</h2>
       </div>
-
-      <p class="output-str">{{greetMsg}},{{name}}</p>
+      {{#if greetMsg}}
+      <p class="output-str">
+        {{#if name}}
+        {{greetMsg}},{{name}}
+         {{else}}
+         {{greetMsg}}
+    {{/if}}
+        </p>
+        {{/if}}
 
     </form>
 
@@ -51,12 +61,15 @@
     return confirm("Are you sure you want to reset the application?\nThis will reset the greet count and people greeted.");
   }
 
-  // Display the error message for 3 seconds and then hide it
-  const errorMessage = document.querySelector('.error-message');
-  if (errorMessage) {
-    errorMessage.style.display = 'block'; // Show the error message
-    setTimeout(() => {
-      errorMessage.style.display = 'none'; // Hide the error message after 4 seconds
-    }, 3000);
-  }
+  document.addEventListener("DOMContentLoaded", function () {
+        const errorMessage = document.getElementById("error-message");
+        const shouldDisplayError = "{{shouldDisplayError}}"; // Get the value from your template
+
+        if (shouldDisplayError === "true") {
+            errorMessage.style.display = "block";
+            setTimeout(() => {
+                errorMessage.style.display = "none";
+            }, 3000);
+        }
+    });
 </script>

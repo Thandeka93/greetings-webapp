@@ -48,12 +48,23 @@ app.get("/", async function (req, res) {
     const counts = await (await datab).peopleCount();
     const counter = Object.values(counts)
 
+    const shouldDisplayError = req.flash("displayError")[0];
+    if (shouldDisplayError) {
+        setTimeout(() => {
+            req.flash("errorText", "");
+            req.flash("displayError", "false"); // Reset the flag to false
+            res.redirect("/");
+        }, 3000);
+    } else {
+
     res.render("index", {
         greetMsg: Greeting.greetRecord(),
         name,
         counter,
         errorText: errorText, // Pass the error message to the template
+        shouldDisplayError: Greeting.shouldDisplayError(),
     });
+}
 });
 
 app.get("/greeted", async (req, res) => {
@@ -67,9 +78,17 @@ app.post("/greetings", async function (req, res) {
     const language = req.body.language;
     Greeting.setName(username);
     
-    if (username && language && username !== null) {
-        Greeting.userGreetLang(language,username);
-       (await datab).insert(Greeting.getName())
+   
+    if (!username || !language) {
+        Greeting.displayErrorMsg(username, language);
+        req.flash("errorText", Greeting.currentErrorMsg());
+    } else {
+        Greeting.userGreetLang(language, username);
+        (await datab).insert(Greeting.getName());
+        // Clear the error message when greeted successfully
+        req.flash("errorText", "");
+        Greeting.resetDisplayErrorFlag(); // Reset the display error flag
+    
     }
 
     res.redirect("/");

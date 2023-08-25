@@ -6,6 +6,7 @@ export default function Greeting() {
   let checkName = "";
   const namesCountMap = {};
   let lowercaseUsername = '';
+  let displayError = false;
   
   async function peopleCount(username) {
     const usernameTrimmed = username.trim();
@@ -58,19 +59,31 @@ export default function Greeting() {
     return checkName;
   }
 
+ 
   function displayErrorMsg(username, language) {
-    if (username !== undefined) {
-      if (username === "") {
+    if (!username && !language) {
         errorMsg = "Please enter your name and select a language";
-      } else if (language === undefined) {
-        errorMsg = "Please select a language and enter your name";
-      } else if (username === "" && language === undefined) {
-        errorMsg = "Please select a language and enter your name";
-      } else if (username !== "" && language !== undefined) {
+        displayError = true; // Set the flag to true for error display
+    } else if (!username) {
+        errorMsg = "Please enter your name";
+        displayError = true; // Set the flag to true for error display
+    } else if (!language) {
+        errorMsg = "Please select a language";
+        displayError = true; // Set the flag to true for error display
+    } else {
         errorMsg = "";
-      }
+        displayError = false; // Reset the flag
     }
+}
+
+
+    function shouldDisplayError() {
+      return displayError;
   }
+
+  function resetDisplayErrorFlag() {
+    displayError = false;
+}
 
   async function resetCounter() {
      greetCounter = 0;
@@ -89,6 +102,8 @@ export default function Greeting() {
     getName,
     userGreetLang,
     displayErrorMsg,
+    shouldDisplayError,
+    resetDisplayErrorFlag,
     resetCounter,
     greetRecord: () => greetMsg,
     currentErrorMsg: () => errorMsg,
