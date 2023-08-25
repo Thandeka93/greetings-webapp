@@ -43,6 +43,7 @@ app.use(flash());
 
 app.get("/", async function (req, res) {
     req.flash("errorText", Greeting.currentErrorMsg());
+    req.flash("shouldDisplayGreet", "false"); // Initialize the flag as false
     const errorText = req.flash("errorText")[0]; // Retrieve the flash message
     const name = Greeting.getName()
     const counts = await (await datab).peopleCount();
@@ -88,6 +89,11 @@ app.post("/greetings", async function (req, res) {
         // Clear the error message when greeted successfully
         req.flash("errorText", "");
         Greeting.resetDisplayErrorFlag(); // Reset the display error flag
+
+        req.flash("shouldDisplayGreet", "true"); // Set the flag to display greet message
+        setTimeout(() => {
+            req.flash("shouldDisplayGreet", "false"); // Reset the flag after 4 seconds
+        }, 4000);
     
     }
 

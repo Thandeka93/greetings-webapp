@@ -31,8 +31,9 @@
         <button class="btn greet-me-btn" type="submit">Greet Me</button>
         <h2 class="counter-text">{{counter}}</h2>
       </div>
+
       {{#if greetMsg}}
-      <p class="output-str">
+      <p class="output-str" id='greet-message'>
         {{#if name}}
         {{greetMsg}},{{name}}
          {{else}}
@@ -71,5 +72,16 @@
                 errorMessage.style.display = "none";
             }, 3000);
         }
+
     });
+    document.addEventListener("DOMContentLoaded", function () {
+  const greetMessage = document.getElementById("greet-message");
+
+  if (greetMessage.textContent.trim() !== "") {
+    greetMessage.style.display = "block";
+    setTimeout(() => {
+      greetMessage.style.display = "none";
+    }, 4000); // Display greet message for 4 seconds
+  }
+});
 </script>
